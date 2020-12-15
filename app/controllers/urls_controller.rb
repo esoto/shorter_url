@@ -62,6 +62,14 @@ class UrlsController < ApplicationController
     end
   end
 
+
+  def decode
+    url_id = Url.bijective_decode(params[:encode_id])
+    url = Url.find(url_id)
+    url.update(visits: url.visits+1)
+    redirect_to url.long_url
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_url
@@ -70,6 +78,6 @@ class UrlsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def url_params
-      params.require(:url).permit(:title, :url, :visits)
+      params.require(:url).permit(:long_url)
     end
 end
